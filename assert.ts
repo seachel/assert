@@ -110,36 +110,6 @@ export class Assert
     return result;
   }
 
-  private static equalValues<T>(a : T, b : T) : boolean
-  {
-    // Create arrays of property names
-    let aProps : string[] = Object.getOwnPropertyNames(a);
-    let bProps : string[] = Object.getOwnPropertyNames(b);
-
-    // If number of properties is different,
-    // objects are not equivalent
-    if (aProps.length != bProps.length)
-    {
-        return false;
-    }
-
-    for (let i = 0; i < aProps.length; i++)
-    {
-        let propName = aProps[i];
-
-        // If values of same property are not equal,
-        // objects are not equivalent
-        if (!Assert.equalValues(a[propName], b[propName]))
-        {
-            return false;
-        }
-    }
-
-    // If we made it this far, objects
-    // are considered equivalent
-    return true;
-  }
-
   private static handleVerificationResult(result : boolean, failureMessage : string, throwError : boolean)
   {
     if (throwError && !result)
