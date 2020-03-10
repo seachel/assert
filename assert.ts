@@ -41,9 +41,20 @@ export class Assert
 
   isInteger(value : number) : boolean
   {
-    let testResult = Assert.isInteger(value, );
+    let testResult = Assert.isInteger(value, false);
 
     let testSummary = `value is ${value}.`;
+
+    return this.handleTestResult(testResult, testSummary);
+  }
+
+  isSorted<T>(value : T[], descending : boolean = false) : boolean
+  {
+    let testResult = Assert.isSorted(value, descending, false);
+
+    let orderNote = descending ? "descending" : "ascending";
+
+    let testSummary = `array checked for ${orderNote} sort is ${value}`;
 
     return this.handleTestResult(testResult, testSummary);
   }
@@ -91,6 +102,33 @@ export class Assert
     return result;
   }
 
+  static isSorted<T>(value : T[], descending : boolean = false, throwError : boolean = true)
+  {
+    let result = true;
+
+    const copyArrayValue = arr => arr.slice();
+
+    let valueAscending : T[] = copyArrayValue(value);
+
+    if (descending)
+    {
+      valueAscending.reverse();
+    }
+
+    for (let i = 0; i < valueAscending.length - 1; i++)
+    {
+      if (valueAscending[i] > valueAscending[i + 1])
+      {
+        result = false;
+        break;
+      }
+    }
+
+    Assert.handleVerificationResult(result, `Not sorted: ${value}.`, throwError);
+
+    return result;
+  }
+
   private static handleVerificationResult(result : boolean, failureMessage : string, throwError : boolean)
   {
     if (throwError && !result)
@@ -101,3 +139,11 @@ export class Assert
 }
 
 // -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+let myTests = new Assert();
+
+myTests.isSorted([1,2,3,4]);
+myTests.isSorted([4,2,3,4]);
+myTests.isSorted([4,3,2,1], true);
+
+console.log(myTests.testLog);
