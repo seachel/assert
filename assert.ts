@@ -87,10 +87,7 @@ export class Assert
       result = expectedValue === actualValue;
     }
 
-    if (throwError && !result)
-    {
-        Assert.handleVerificationFailure(`Not equal: ${expectedValue} and ${actualValue}`);
-    }
+    Assert.handleVerificationResult(result, `Not equal: ${expectedValue} and ${actualValue}`, throwError);
 
     return result;
   }
@@ -99,10 +96,7 @@ export class Assert
   {
     let result = value > 0;
 
-    if (throwError && !result)
-    {
-        Assert.handleVerificationFailure(`Not positive: ${value}.`);
-    }
+    Assert.handleVerificationResult(result, `Not positive: ${value}.`, throwError);
 
     return result;
   }
@@ -111,10 +105,7 @@ export class Assert
   {
     let result = value % 1 === 0;
 
-    if (throwError && !result)
-    {
-      Assert.handleVerificationFailure(`Not an integer: ${value}.`)
-    }
+    Assert.handleVerificationResult(result, `Not an integer: ${value}.`, throwError);
 
     return result;
   }
@@ -149,9 +140,12 @@ export class Assert
     return true;
   }
 
-  private static handleVerificationFailure(message : string)
+  private static handleVerificationResult(result : boolean, failureMessage : string, throwError : boolean)
   {
-    throw new Error(message);
+    if (throwError && !result)
+    {
+      throw new Error(failureMessage);
+    }
   }
 }
 
