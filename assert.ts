@@ -7,24 +7,27 @@ export class Assert
     this.testLog = [];
   }
 
+  private handleTestResult(testResult : boolean, testSummary : string) : boolean
+  {
+    if (testResult)
+    {
+      this.testLog.push("Pass: " + testSummary);
+    }
+    else
+    {
+      this.testLog.push("Fail: " + testSummary);
+    }
+
+    return testResult;
+  }
+
   isEqual<T>(expectedValue : T, actualValue : T, valueEquality : boolean = false) : boolean
   {
     let testResult = Assert.isEqual(expectedValue, actualValue, valueEquality, false);
 
     let testSummary = `Expected value is \n ${JSON.stringify(expectedValue)}. \n Actual value is \n ${JSON.stringify(actualValue)}`;
 
-    if (testResult)
-    {
-      testSummary = "Pass: " + testSummary;
-    }
-    else
-    {
-      testSummary = "Fail: " + testSummary;
-    }
-
-    this.testLog.push(testSummary);
-
-    return testResult;
+    return this.handleTestResult(testResult, testSummary);
   }
 
   isPositive(value : number) : boolean
@@ -33,18 +36,7 @@ export class Assert
 
     let testSummary = `value is ${value}.`;
 
-    if (testResult)
-    {
-      testSummary = "Pass: " + testSummary;
-    }
-    else
-    {
-      testSummary = "Fail: " + testSummary;
-    }
-
-    this.testLog.push(testSummary);
-
-    return testResult;
+    return this.handleTestResult(testResult, testSummary);
   }
 
   isInteger(value : number) : boolean
@@ -53,18 +45,7 @@ export class Assert
 
     let testSummary = `value is ${value}.`;
 
-    if (testResult)
-    {
-      testSummary = "Pass: " + testSummary;
-    }
-    else
-    {
-      testSummary = "Fail: " + testSummary;
-    }
-
-    this.testLog.push(testSummary);
-
-    return testResult;
+    return this.handleTestResult(testResult, testSummary);
   }
 
   // Static Verification Methods:
